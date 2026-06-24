@@ -1,0 +1,7 @@
+node_modules
+.next
+/media
+*.db
+*.db-journal
+.env
+orchestrator/__pycache__

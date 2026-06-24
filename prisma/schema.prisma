@@ -1,0 +1,61 @@
+// Osse Studio -- local-first SQLite schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id            String      @id @default(cuid())
+  title         String
+  aspectRatio   String      @default("9:16")
+  colorArcNotes String?
+  createdAt     DateTime    @default(now())
+  shots         Shot[]
+  renderJobs    RenderJob[]
+}
+
+model Shot {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  order           Int      @default(0)
+  prompt          String   @default("")
+  imagePath       String?
+  videoPath       String?
+  status          String   @default("idle")
+  cameraMotion    String   @default("static")
+  durationSeconds Float    @default(3)
+  errorMessage    String?
+  createdAt       DateTime @default(now())
+  assets          Asset[]
+
+  @@index([projectId, order])
+}
+
+model Asset {
+  id           String   @id @default(cuid())
+  shotId       String
+  shot         Shot     @relation(fields: [shotId], references: [id], onDelete: Cascade)
+  type         String
+  filePath     String
+  sourceEngine String   @default("local")
+  createdAt    DateTime @default(now())
+
+  @@index([shotId])
+}
+
+model RenderJob {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  status          String   @default("queued")
+  outputPath      String?
+  progressPercent Int      @default(0)
+  errorMessage    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

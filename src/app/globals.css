@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+body {
+  background-color: #0a0a0b;
+  color: #ededed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #26262b; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes pulse-soft { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+.animate-pulse-soft { animation: pulse-soft 1.5s ease-in-out infinite; }

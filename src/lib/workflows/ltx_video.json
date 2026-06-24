@@ -1,0 +1,81 @@
+{
+  "1": {
+    "class_type": "LTXVLoader",
+    "inputs": {
+      "ckpt_name": "ltx-video-2b-v0.9.1.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "%INPUT_IMAGE%"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "%POSITIVE%",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "%NEGATIVE%",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "5": {
+    "class_type": "LTXVImgToVideo",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ],
+      "image": [
+        "2",
+        0
+      ],
+      "positive": [
+        "3",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "width": 480,
+      "height": 832,
+      "length": 65,
+      "frame_rate": 25,
+      "motion": "%MOTION%",
+      "seed": 0,
+      "steps": 20,
+      "cfg": 3.0
+    }
+  },
+  "6": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "images": [
+        "5",
+        0
+      ],
+      "frame_rate": 25,
+      "format": "video/h264-mp4",
+      "filename_prefix": "osse_vid",
+      "pingpong": false,
+      "save_output": true
+    }
+  }
+}
